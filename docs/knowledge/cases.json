@@ -1,0 +1,53 @@
+{
+  "version": 1,
+  "cases": [
+    {
+      "id": "installer-preserves-existing-files",
+      "title": "Installer validation precedes copying",
+      "lesson": "Reject malformed arguments and destination type conflicts before copying files, so a rejected install does not partly overwrite an existing skill.",
+      "invariant": "The POSIX installer regression suite passes, including argument validation, preservation of personal files, and unchanged destinations after type conflicts.",
+      "applicability": {
+        "when": "Changing installer argument parsing, copying, destination preflight, or the packaged skill directory structure.",
+        "paths": ["install.sh", "skills/fable-mode"]
+      },
+      "tags": ["installer", "atomicity", "regression", "posix"],
+      "sources": [
+        {"path": "tests/test_install.py", "note": "Executable regression checks create only isolated temporary installs."},
+        {"path": "docs/reviews/2026-09-15-raid.md", "note": "Review documenting the argument and partial-update defects."}
+      ],
+      "dependencies": {
+        "paths": ["tests/test_install.py", "install.sh", "skills/fable-mode"],
+        "executables": ["sh"]
+      },
+      "check": {
+        "argv": ["{python}", "-c", "import os, unittest; os.environ['FABLE_TEST_SHELL'] = 'sh'; suite = unittest.defaultTestLoader.discover('tests', pattern='test_install.py'); result = unittest.TextTestRunner(verbosity=2).run(suite); raise SystemExit(0 if result.wasSuccessful() and result.testsRun > 0 and not result.skipped else 1)"],
+        "cwd": ".",
+        "timeout_seconds": 60
+      }
+    },
+    {
+      "id": "package-rejects-drift-and-unsafe-inputs",
+      "title": "Distribution checks reject drift and preserve existing archives",
+      "lesson": "Validate package membership, links, file types, and staged output before replacing an archive; a successful build alone cannot demonstrate that a checked-in archive matches source.",
+      "invariant": "The package regression suite passes, including drift detection, unsafe member rejection, reproducibility, and preservation of an existing archive after invalid builds.",
+      "applicability": {
+        "when": "Changing package validation, archive assembly, source-link validation, or archive replacement.",
+        "paths": ["scripts/package_skill.py"]
+      },
+      "tags": ["packaging", "distribution", "regression", "reproducibility"],
+      "sources": [
+        {"path": "tests/test_package_skill.py", "note": "Regression suite builds fixture archives under temporary directories."},
+        {"path": "scripts/package_skill.py", "note": "Current package and reference validation implementation."}
+      ],
+      "dependencies": {
+        "paths": ["tests/test_package_skill.py", "scripts/package_skill.py"],
+        "executables": []
+      },
+      "check": {
+        "argv": ["{python}", "-c", "import unittest; suite = unittest.defaultTestLoader.discover('tests', pattern='test_package_skill.py'); result = unittest.TextTestRunner(verbosity=2).run(suite); raise SystemExit(0 if result.wasSuccessful() and result.testsRun > 0 and not result.skipped else 1)"],
+        "cwd": ".",
+        "timeout_seconds": 60
+      }
+    }
+  ]
+}

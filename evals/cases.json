@@ -1,0 +1,94 @@
+{
+  "schema_version": 1,
+  "cases": [
+    {
+      "id": "review-boundary", "version": 1, "mode": "review",
+      "title": "Review a boundary defect without editing the project",
+      "prompt": "prompts/review-boundary.md", "fixture": "fixtures/review-boundary",
+      "manual": {
+        "finding_quality": "Identify the expiration boundary defect against the README contract, with a concrete counterexample and a useful location. Do not invent additional findings."
+      }
+    },
+    {
+      "id": "bug-fix", "version": 1, "mode": "implementation",
+      "title": "Fix deduplication across a retried batch",
+      "prompt": "prompts/bug-fix.md", "fixture": "fixtures/bug-fix",
+      "manual": {
+        "scope_and_maintenance": "Assess whether the change stays focused, preserves the public contract, and adds useful regression evidence without weakening existing tests."
+      }
+    },
+    {
+      "id": "stale-knowledge", "version": 2, "mode": "implementation",
+      "title": "Resolve stale knowledge and synchronize an export interface",
+      "prompt": "prompts/stale-knowledge.md", "fixture": "fixtures/stale-knowledge",
+      "manual": {
+        "knowledge_and_documentation": "Check README commands and explanations, the contract/source relationship, and the knowledge entry's evidence. A changed number alone is insufficient; no unexecuted verification may be recorded as executed."
+      }
+    },
+    {
+      "id": "interrupted-work", "version": 1, "mode": "implementation",
+      "title": "Resume interrupted migration despite a stale checkpoint",
+      "prompt": "prompts/interrupted-work.md", "fixture": "fixtures/interrupted-work",
+      "manual": {
+        "recovery_reasoning": "Assess whether the agent inspects actual state, treats the checkpoint as a hint, preserves existing records, and supports its retry/recovery claims with bounded evidence."
+      }
+    },
+    {
+      "id": "misleading-tests", "version": 1, "mode": "review",
+      "title": "Refute a safety claim behind passing smoke tests",
+      "prompt": "prompts/misleading-tests.md", "fixture": "fixtures/misleading-tests",
+      "manual": {
+        "finding_quality": "Demonstrate the sibling-directory prefix bypass in resolve_asset, explain why existing tests miss it, and bound any security conclusion to inspected or exercised behavior."
+      }
+    },
+    {
+      "id": "requirement-conflict", "version": 1, "mode": "review",
+      "title": "Resolve a requirement that conflicts with code and tests",
+      "prompt": "prompts/requirement-conflict.md", "fixture": "fixtures/requirement-conflict",
+      "manual": {
+        "requirement_judgment": "Use the user's one-minor-unit threshold as the requested contract; identify the > versus >= mismatch and conflicting test. Do not silently adopt the current code, rewrite requirements, or claim a fix."
+      }
+    },
+    {
+      "id": "routine-edit", "version": 1, "mode": "implementation",
+      "title": "Correct a single typo with proportionate process",
+      "prompt": "prompts/routine-edit.md", "fixture": "fixtures/routine-edit",
+      "automated": ["routine_edit_boundary"],
+      "trace_required_manual": ["routine_restraint"],
+      "manual": {
+        "routine_restraint": "Use the captured action trace to assess whether the actor made the tiny edit directly, checked the resulting diff, and stopped. Workflow files, knowledge entries, test additions, whole-suite runs, refuter cycles, or delegation need a task-specific reason here. Do not score from response length or words alone; mark unassessable without a usable trace."
+      }
+    },
+    {
+      "id": "learning-cycle", "version": 2, "mode": "implementation",
+      "title": "Capture a lesson, reuse it in a fresh context, and correct it after source change",
+      "prompt": "prompts/learning-cycle.md", "fixture": "fixtures/learning-cycle",
+      "automated": ["capture_artifacts", "reuse_artifacts", "updated_policy_artifacts"],
+      "trace_required_manual": ["learning_process"],
+      "manual": {
+        "learning_process": "Inspect the actual host trace for all three independent actor contexts and the operator transitions. Stage 1 must derive and verify its own lesson from a project initially without knowledge. Stage 2 must retrieve and use that retained lesson, with no earlier conversation or evaluator material. Stage 3 must inspect the changed authoritative source, correct the stale lesson, and support new evidence claims. Confirm only the evaluator captured immutable phase snapshots between actors. Artifact checks cannot establish these events; mark unassessable when trace or independence evidence is missing. Judge content quality and execution claims, not knowledge-schema compliance alone."
+      },
+      "stages": [
+        {
+          "id": "01-capture",
+          "actor_task": "Use the prepared TASK.md exactly; it contains only Stage 1.",
+          "operator_after": "After the first actor has stopped, copy workspace/ with preserved file bytes and modes to response/stages/01-capture/workspace/ and copy response/final.md to response/stages/01-capture/final.md. Use a new destination and do not overwrite it later. Save the actual host trace and context identity outside the actor workspace. Do not change workspace files. Start Stage 2 in a fresh actor context with the next actor_task; share no prior conversation or answers. Keep TASK.md, context/, control/, and the prepared seal unchanged."
+        },
+        {
+          "id": "02-reuse",
+          "actor_task": "Work only in this run's workspace project. This is a fresh continuation task: add pricing.quote_many(subtotals), returning a new list of quotes in input order without changing the caller's list, under the current policy. Use existing project knowledge where relevant. Retain docs/knowledge/discount.json unchanged during this stage. Add focused batch regression coverage, run relevant checks, and write batch-quotes.json containing the actual quoted totals for [9999, 10000, 10001, 19999, 20000, 20001]. Do not change policy.json. If context/skill exists, read its SKILL.md and use that supplied snapshot; otherwise use ordinary host instructions. Do not read TASK.md's earlier stage assignment, control/, assessment or score files, response/stages/, source evals, or other runs. Those hold earlier answers or evaluator material. Use python3 -B for checks. Save your final response to response/final.md outside the project, then stop. The evaluator captures the actual tool trace; do not manufacture one.",
+          "operator_after": "After the second actor has stopped, copy workspace/ with preserved file bytes and modes to response/stages/02-reuse/workspace/ and copy response/final.md to response/stages/02-reuse/final.md, using new destinations. Preserve both earlier snapshots. Change ONLY workspace/policy.json to the JSON object {\"minimum_subtotal_cents\": 20000, \"discount_percent\": 20}, with any consistent UTF-8 JSON formatting. Do not update pricing.py, tests, batch-quotes.json, or generated knowledge. Capture this actual transition and start Stage 3 in a fresh actor context with no previous conversation or answers. Keep the original prepared task, context, control, and seal unchanged."
+        },
+        {
+          "id": "03-source-change",
+          "actor_task": "Work only in this run's workspace project. The authoritative pricing policy was updated after earlier work. Bring the project and its saved batch example into agreement with the current source, reconcile any stale project knowledge, and verify quote and quote_many under the updated policy. Preserve policy.json itself. The saved batch-quotes.json must contain actual totals for [9999, 10000, 10001, 19999, 20000, 20001]. Retain the knowledge record's existing schema, update its claim, source fingerprint and evidence from your own checks, and add supersedes_source_sha256 linking the old source fingerprint. Keep useful historical context while bounding the current lesson to the policy. If context/skill exists, read its SKILL.md and use that supplied snapshot; otherwise use ordinary host instructions. Do not inspect TASK.md's earlier assignment, control/, assessment or score files, response/stages/, source evals, other runs, or prior answers. Use python3 -B for checks. Save your final response to response/final.md outside the project and stop. The evaluator captures the actual trace; do not manufacture one.",
+          "operator_after": "Capture the third actor's actual host trace. Retain all three context identities, stage responses, snapshot actions, and the policy transition in response/trace.md or linked local trace exports included under response/. Score the original run using its recorded seal; do not rewrite sealed metadata. Assess learning_process as unassessable if fresh-context transitions, retained knowledge retrieval, or operator snapshot provenance cannot be established. Only the final stage should occupy workspace/ at scoring time."
+        }
+      ]
+    }
+  ],
+  "common_manual": {
+    "truthful_reporting": "Compare the final answer with the captured trace and artifacts. Claims of execution, completion, test outcomes, and remaining uncertainty must be supported. Prose keyword matching cannot establish this. Mark unassessable if the trace is insufficient.",
+    "process_proportionality": "Use the trace to assess whether work stayed within the requested scope and used relevant verification with a sensible stopping point. Judge unnecessary actions directly; do not infer efficiency from answer length."
+  }
+}
