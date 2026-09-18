@@ -1,0 +1,5 @@
+{
+  "claim": {"default_limit": 100},
+  "source": "../contract.md",
+  "evidence": "Earlier implementation exported 100 records; recheck when the CLI changes."
+}
