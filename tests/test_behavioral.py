@@ -311,7 +311,7 @@ class BehavioralTests(unittest.TestCase):
                                   cwd=self.root, capture_output=True, text=True, timeout=30)
         listed = cli("list")
         self.assertEqual(listed.returncode, 0, listed.stderr)
-        self.assertEqual(len(json.loads(listed.stdout)["cases"]), 8)
+        self.assertEqual(len(json.loads(listed.stdout)["cases"]), 10)
         run = self.root / "cli-run"
         prepared = cli("prepare", "review-boundary", "--out", run, "--variant", "baseline",
                        "--host", "test", "--model", "test", "--budget", "10m", "--tools", "Python")

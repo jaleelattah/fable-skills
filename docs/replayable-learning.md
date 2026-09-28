@@ -39,9 +39,10 @@ for schemas, applicability, and execution limits.
 
 ## 2. Evaluate actual agent behavior
 
-The [behavioral suite](../evals/README.md) includes eight tasks covering reviews,
+The [behavioral suite](../evals/README.md) includes ten tasks covering reviews,
 bug fixes, stale knowledge, interrupted work, misleading tests, conflicting
-requirements, a routine edit, and learning across fresh sessions. It prepares
+requirements, a routine edit, learning across fresh sessions, and guided workflow
+kickoff/building. It prepares
 task folders and scores the resulting artifacts. The learning-cycle case uses
 three fresh actors and evaluator-controlled stage snapshots; follow its sealed
 stage protocol instead of asking one actor to simulate multiple sessions.

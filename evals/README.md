@@ -1,6 +1,6 @@
 # Behavioral trials
 
-This suite checks whether an agent completes eight small, realistic tasks. It
+This suite checks whether an agent completes ten small, realistic tasks. It
 supports any host that can read files and work on a local Python fixture. It does
 not call provider APIs, install skills, infer reasoning quality from prose, or
 claim that a single successful run proves Fable improves a model.
@@ -35,6 +35,12 @@ The evaluator/operator should capture the host's actual tool/action log in
 If a trace is unavailable, process and truthful-reporting judgments remain
 unassessable. Token, time and tool descriptors are declared conditions, not
 enforced limits or measured telemetry; the host/operator must enforce any budget.
+
+For delegated reviews, retain the reviewer's relevant actions and actual public
+findings, with their task/turn identity and ordering. A tool receipt or encrypted
+message payload cannot establish what was found. If the host stores public final
+answers separately, export those explicitly with provenance; never substitute the
+builder's account or include private reasoning and system prompts.
 
 ## Scoring and assessment
 
@@ -81,6 +87,29 @@ Manual judgments are explicitly attributed assertions. The harness verifies
 their shape and binds them to this run's current outputs; it cannot independently
 verify that the reviewer interpreted the evidence correctly. Editing any task
 artifact or trace invalidates its existing assessment and stored score.
+
+## Guided workflow cases
+
+`workflow-kickoff` presents an underspecified request to start an agentic workflow.
+The actor returns its opening questions without creating a design or changing the
+project. The read-only boundary is checked automatically. A reviewer uses the
+actual trace and response to judge whether questions seek the missing outcome
+and relevant decisions without requiring a framework, model, or agent count.
+
+`workflow-build` supplies a concrete local callback workflow, original
+requirements, a candidate specification, and an implementation. Artifact checks
+exercise the stated contract with deterministic workers, including repair after
+rejection and bounded failure handling. They can reject an implemented bad rule
+and a separate code defect. They cannot establish that the actor challenged the
+spec before building or reviewed the implementation afterward; those events,
+spec quality, and honest handling of untested live integrations require captured
+actions and manual assessment. Passing the fixture does not demonstrate a live
+agent service or a performance improvement.
+
+Prepare either case with the same `prepare` command above, substituting its ID.
+For the kickoff trial, the saved response represents the questions a user would
+see; the actor stops there instead of contacting the real user for test answers.
+The build trial supplies enough direction to proceed without another intake.
 
 ## Observed measurements
 

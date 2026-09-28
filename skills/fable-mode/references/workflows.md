@@ -6,6 +6,10 @@ a reusable workflow also explains what changes between runs and how to resume
 after failure. Build only the form the user needs: a concise plan, runbook, or
 executable implementation in the existing system.
 
+For a guided agentic kickoff and a build cycle that challenges both the spec and
+the implementation, use [agentic-build.md](agentic-build.md). It reuses the step
+contracts and execution rules here.
+
 ## Build backward from the result
 
 1. Establish the intended output, scope, constraints, and observable acceptance
