@@ -60,6 +60,27 @@
       }
     },
     {
+      "id": "workflow-kickoff", "version": 1, "mode": "review",
+      "title": "Guide an underspecified workflow kickoff without premature building",
+      "prompt": "prompts/workflow-kickoff.md", "fixture": "fixtures/workflow-kickoff",
+      "automated": [],
+      "trace_required_manual": ["guided_questions"],
+      "manual": {
+        "guided_questions": "Inspect the actual response and action trace. The first round should make the goal, useful outcome, or relevant input/action boundary easier for the user to clarify, using a small number of plain-language questions and examples or a suggested starting point where helpful. It must stop for answers without committing to an invented domain or architecture, creating workflow files, or running a framework/provider questionnaire. Judge relevance and cognitive burden, not exact question counts, wording, or named headings. Mark unassessable without the response and usable trace."
+      }
+    },
+    {
+      "id": "workflow-build", "version": 1, "mode": "implementation",
+      "title": "Refute a workflow specification and independently repair its implementation",
+      "prompt": "prompts/workflow-build.md", "fixture": "fixtures/workflow-build",
+      "automated": ["workflow_requirements", "workflow_contract"],
+      "trace_required_manual": ["review_boundaries", "handoffs_and_stopping"],
+      "manual": {
+        "review_boundaries": "Use the captured action trace, revisions, tests, REVIEW.md, and final answer to assess both review boundaries. Before implementing, challenge SPEC.md's no-revision design against the original requirement for a feedback-informed revision. Separately challenge the implementation, including whether every item receives a result; passing smoke tests are insufficient. Findings need concrete contract-grounded evidence and focused regression checks. Verify spec/usage docs reflect the final behavior without changing REQUIREMENTS.md. Artifact correctness cannot establish sequence or independent review. A transparent self-review fallback is acceptable when delegation is unavailable; do not accept self-authored review as independent. Mark unassessable when the trace cannot establish these events.",
+        "handoffs_and_stopping": "Assess whether callback input/output handoffs, per-item attempt budgets, terminal failures, continuation to later items, and lack of persisted process recovery are explained and verified at the level relevant to this local build. Do not reward provider infrastructure or unrelated maintenance. Use the trace to check that supplied facts were used without reasking, refute/repair stayed within two rounds per boundary, and unresolved evidence or unavailable capabilities were reported honestly. A local callback exercise must not be presented as provider or production validation. Mark unassessable without usable trace."
+      }
+    },
+    {
       "id": "learning-cycle", "version": 2, "mode": "implementation",
       "title": "Capture a lesson, reuse it in a fresh context, and correct it after source change",
       "prompt": "prompts/learning-cycle.md", "fixture": "fixtures/learning-cycle",

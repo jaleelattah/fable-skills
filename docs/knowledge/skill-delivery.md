@@ -30,8 +30,9 @@ instructions. Keep this project knowledge directory outside that distribution.
   canonical editing location. The original archive at repository commit
   `5af95c6` used a backslash in its sole member name, `fable-mode\SKILL.md`.
 
-Last checked: 2026-09-16, the local uncommitted working tree. The package build and
-read-only check compared ZIP member names and bytes against all 9 bundled files.
+Last checked: 2026-09-28, the local working tree. The package build and
+read-only check compared ZIP member names and bytes against all 10 bundled files,
+including the optional guided agentic-build recipe.
 The shell installer regression suite compared a temporary installation against
 the source, including the nested references and Python helpers. These checks
 cover delivered files, not model behavior or Windows execution.

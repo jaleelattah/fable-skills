@@ -8,13 +8,45 @@ Fable Mode is a set of instructions. It does not change the underlying model, un
 
 The [practical guide](docs/replayable-learning.md) connects three working tools:
 
-- **Behavioral suite:** prepare fresh baseline/candidate tasks, evaluate artifacts with held-out checks, and compare compatible results and observer-recorded effort. Reviewer judgments remain visibly pending until assessed. Eight cases, including routine work and learning across fresh sessions, live in [evals](evals/README.md).
+- **Behavioral suite:** prepare fresh baseline/candidate tasks, evaluate artifacts with held-out checks, and compare compatible results and observer-recorded effort. Reviewer judgments remain visibly pending until assessed. Ten cases, including guided workflow builds, routine work, and learning across fresh sessions, live in [evals](evals/README.md).
 - **Executable knowledge:** search past failure lessons, explicitly replay their regression checks, and detect stale evidence. Two [real cases](docs/knowledge/cases.json) cover installer and package failures.
 - **Portable checkpoints:** save a task's goal, decisions, dependencies, and file fingerprints; detect stale completed work before resuming elsewhere. See the [checkpoint guide](skills/fable-mode/references/checkpoints.md).
 
 The casebook and checkpoint helpers ship with the skill. The evaluation harness is a repository development tool. All three use Python 3.9+ and the standard library; no provider credentials or background services are required. They execute trusted local code only when explicitly invoked for that purpose and do not provide an operating-system sandbox.
 
 ## Workflows and refutation
+
+### Start an agentic workflow
+
+After selecting the skill in your host, say:
+
+> Fable mode: start an agentic workflow. Help me work out what to build.
+
+The skill asks a few focused questions about the result, inputs, and decisions
+that still need your direction. It reuses answers from the conversation and
+project, recommends technical choices, and moves into the requested work once
+enough is known. You do not need to arrive with a framework or agent design.
+
+If you already know the goal, be direct:
+
+> Fable mode: build an agentic workflow for [goal] in [project]. Refute the spec
+> before building, then refute and repair the implementation. Include verification,
+> relevant docs and code health checks, and reusable lessons.
+
+Say **“design only”** when you want a specification rather than implementation.
+These are natural-language requests, not additional slash commands. The
+[guided build recipe](skills/fable-mode/references/agentic-build.md) connects:
+
+**Requirements → spec challenge and revision → build → implementation challenge
+and repair → integrated verification → docs and learning.**
+
+The first challenge checks whether the specification would achieve your original
+goal even if built perfectly. The second checks the actual implementation against
+both that goal and the revised specification. Independent review uses available
+host tools; otherwise the agent labels it self-review. Unresolved material claims
+stay visible, and rechecks stop when evidence settles them or progress is blocked.
+
+### Supporting guides
 
 - **Workflow design:** turns the desired result into steps with inputs, dependencies, outputs, acceptance checks, and recovery paths. For substantial or reusable work, the [workflow guide](skills/fable-mode/references/workflows.md) covers execution, delegation, and resuming after interruption.
 - **Refuter process:** challenges an important claim with a concrete counterexample. The [refutation guide](skills/fable-mode/references/refutation.md) covers independent review, a self-review fallback, evidence-based findings, and bounded rechecks.
@@ -125,6 +157,8 @@ Installer tests use an available POSIX shell. Set `FABLE_TEST_SHELL` to another 
 The [learning-tools review](docs/reviews/2026-09-16-learning-tools.md) records the new helpers' regression coverage and the actual paired smoke trial, including its unassessable dimensions.
 
 The later [lean-core evaluation](docs/reviews/2026-09-16-lean-evaluation.md) records the shorter core, actual host measurements, routine-task comparisons, and a three-session learning trial, including grader corrections and interpretation limits.
+
+The [guided-workflow review](docs/reviews/2026-09-28-guided-workflows.md) records the kickoff and specification/implementation review trials, their regression controls, and validation limits.
 
 ## License
 

@@ -1,8 +1,8 @@
 ---
 name: fable-mode
 description: >-
-  Evidence-driven investigation, workflow design, targeted refutation, and project
-  knowledge reuse. Use for "fable mode", "fable it", "think like fable", "act like
+  Evidence-driven investigation, guided agentic workflow builds, targeted refutation,
+  and project knowledge reuse. Use for "fable mode", "fable it", "think like fable", "act like
   fable", or "mythos mode"; rigorous investigations, claimed-fix verification, or
   complex workflows whose assumptions need testing. Not for literary fables or
   routine questions that need only a direct answer.
@@ -89,8 +89,14 @@ this task. Do not narrate the loop as a checklist.
 Read only the guide relevant to the current decision; links do not imply a
 mandatory sequence or a requirement to read every guide.
 
+For “Fable mode: start an agentic workflow” or a request to guide a workflow build,
+use the agentic-build recipe below. It asks for missing decisions, then connects
+specification refutation to building and implementation refutation. Skip questions
+already answered by the request or project.
+
 | Need | Guide |
 | --- | --- |
+| Guided kickoff and a workflow build with specification and implementation challenges | [Agentic build](references/agentic-build.md) |
 | Reusable workflow, substantial dependencies, or recovery design | [Workflows](references/workflows.md) |
 | Bounded challenge to a material claim; review handoff or unresolved findings | [Refutation](references/refutation.md) |
 | Build, retrieve, correct, or retire durable project knowledge | [Knowledge](references/knowledge.md) |
